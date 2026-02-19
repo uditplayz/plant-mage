@@ -1,8 +1,8 @@
 'use client';
 
 import {
-    LineChart,
-    Line,
+    AreaChart,
+    Area,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -25,39 +25,55 @@ export function HistoryChart({ data }: HistoryChartProps) {
     }));
 
     return (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-100 mb-4">Moisture Trends</h3>
-            <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                        <XAxis
-                            dataKey="time"
-                            stroke="#94a3b8"
-                            tick={{ fontSize: 12 }}
-                            tickMargin={10}
-                        />
-                        <YAxis
-                            stroke="#94a3b8"
-                            tick={{ fontSize: 12 }}
-                            unit="%"
-                        />
-                        <Tooltip
-                            contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#f1f5f9' }}
-                            itemStyle={{ color: '#f1f5f9' }}
-                        />
-                        <Legend />
-                        <Line
-                            type="monotone"
-                            dataKey="moisturePercent"
-                            stroke="#06b6d4"
-                            strokeWidth={3}
-                            dot={false}
-                            name="Moisture (%)"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
+        <div className="h-[400px] w-full mt-4">
+            <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData}>
+                    <defs>
+                        <linearGradient id="colorMoisture" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                    <XAxis
+                        dataKey="time"
+                        stroke="#64748b"
+                        tick={{ fontSize: 12, fill: '#64748b' }}
+                        tickMargin={10}
+                        axisLine={false}
+                        tickLine={false}
+                    />
+                    <YAxis
+                        stroke="#64748b"
+                        tick={{ fontSize: 12, fill: '#64748b' }}
+                        unit="%"
+                        axisLine={false}
+                        tickLine={false}
+                    />
+                    <Tooltip
+                        contentStyle={{
+                            backgroundColor: '#0f172a',
+                            borderColor: '#1e293b',
+                            color: '#f1f5f9',
+                            borderRadius: '0.5rem',
+                            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
+                        }}
+                        itemStyle={{ color: '#818cf8' }}
+                        cursor={{ stroke: '#6366f1', strokeWidth: 1, strokeDasharray: '4 4' }}
+                    />
+                    <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
+                    <Area
+                        type="monotone"
+                        dataKey="moisturePercent"
+                        stroke="#6366f1"
+                        strokeWidth={3}
+                        fillOpacity={1}
+                        fill="url(#colorMoisture)"
+                        name="Moisture (%)"
+                        activeDot={{ r: 6, strokeWidth: 0, fill: '#818cf8' }}
+                    />
+                </AreaChart>
+            </ResponsiveContainer>
         </div>
     );
 }
